@@ -9,6 +9,7 @@ class RollingHash:
         self.init = 0
         self.end = size
 
+    # Note that this rolling hash is very simple and does not handle many cases like integer overflow f.ex
     def update(self):
         if self.end <= len(self.str) - 1:
             self.hash -= ord(self.str[self.init])
@@ -45,4 +46,7 @@ def rabin_karp(substring, string):
     return -1
 
 
+print(rabin_karp("H", "Hello World"))
+print(rabin_karp("ell", "Hello World"))
 print(rabin_karp("Wo", "Hello World"))
+print(rabin_karp("ttt", "Hello World"))
