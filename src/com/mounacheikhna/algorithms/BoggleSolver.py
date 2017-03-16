@@ -1,5 +1,4 @@
-
-#!/usr/bin/python
+# !/usr/bin/python
 
 class TrieNode:
     def __init__(self, parent, value):
@@ -9,19 +8,21 @@ class TrieNode:
         if parent is not None:
             parent.children[ord(value) - 97] = self
 
+
 def MakeTrie(dictfile):
     dict = open(dictfile)
     root = TrieNode(None, '')
     for word in dict:
         curNode = root
         for letter in word.lower():
-            if 97 <= ord(letter) < 123: # ?
+            if 97 <= ord(letter) < 123:  # ?
                 nextNode = curNode.children[ord(letter) - 97]
                 if nextNode is None:
                     nextNode = TrieNode(curNode, letter)
                 curNode = nextNode
         curNode.isWord = True
     return root
+
 
 def BoggleWords(grid, dict):
     rows = len(grid)
@@ -51,4 +52,4 @@ def BoggleWords(grid, dict):
 
 
 d = MakeTrie('/usr/share/dict/words')
-print(BoggleWords(['fxie','amlo','ewbx','astu'], d))
+print(BoggleWords(['fxie', 'amlo', 'ewbx', 'astu'], d))

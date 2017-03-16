@@ -42,6 +42,8 @@ def inversion_count(a):
 
 
 a = [6, 5, 4, 3, 2, 1]
-print 'before sorting', a
+print
+'before sorting', a
 r = inversion_count(a)
-print 'after sorting', r
+print
+'after sorting', r

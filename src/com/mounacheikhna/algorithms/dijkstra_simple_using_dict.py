@@ -1,6 +1,7 @@
 import collections
 import math
 
+
 class Graph:
     '''
     '''
