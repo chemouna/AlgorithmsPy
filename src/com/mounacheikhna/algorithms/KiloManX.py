@@ -20,6 +20,8 @@ class KiloManX:
 
         m = len(damageChart)
         numWeapons = len(damageChart[0])
+        for i in range(1 << 15):
+            visited.append(False)
 
         while pq:
             top = heapq.heappop(pq)
@@ -35,30 +37,33 @@ class KiloManX:
             if top.weapon == (1 << numWeapons) - 1:
                 return top.shots
 
-            for i in range(0, m):
+            for itm in range(0, m):
                 # check first if we have visited this boss before
-                if top.weapon >> i & 1: # why this ?
+                if top.weapon >> itm & 1: # why this ?
                     continue
 
-                best = bossHealth[i]
-                for j in range(0, m):
-                    if i == j:
-                        continue
+                best = bossHealth[itm]
+                for itn in range(0, m):
+                    if itm == itn:
+                        pass
 
-                    if top.weapon >> i && damageChart[j][i] != '0':
+                    if ((top.weapon >> itm) & 1 == 1) and damageChart[itn][itm] != '0':
                         # we have a weapon let's try it
-                        shotsNeeded = bossHealth[i] / (damageChart[j][i] - '0') # why here too ?
-                        if bossHealth[i] % (damageChart[j][i] - '0') != 0:
-                            shotsNeeded += 1
-                        best = min(best, shotsNeeded)
+                        harm = (damageChart[itn][itm] - '0')
+                        shots = math.floor(bossHealth[itm] / harm)
+                        if bossHealth[itm] % harm != 0:
+                            shots += 1
+                        best = min(best, shots)
 
-                heapq.heappush(pq, Node(top.weapon | (1 << i), top.shots + best)) # ??
+                heapq.heappush(pq, Node(top.weapon | (1 << itm), top.shots + best)) # ??
+        return -1
 
-damageChart = ["198573618294842", "159819849819205", "698849290010992", "000000000000000", "139581938009384",
-               "158919111891911", "182731827381787", "135788359198718", "187587819218927", "185783759199192",
-               "857819038188122", "897387187472737", "159938981818247", "128974182773177", "135885818282838"]
-bossHealth = [157, 1984, 577, 3001, 2003, 2984, 5988, 190003, 9000, 102930, 5938, 1000000, 1000000, 5892, 38]
-# damageChart = ["1542", "7935", "1139", "8882"]
-# bossHealth = [150,150,150,150]
+
+#damageChart = ["198573618294842", "159819849819205", "698849290010992", "000000000000000", "139581938009384",
+#               "158919111891911", "182731827381787", "135788359198718", "187587819218927", "185783759199192",
+#               "857819038188122", "897387187472737", "159938981818247", "128974182773177", "135885818282838"]
+#bossHealth = [157, 1984, 577, 3001, 2003, 2984, 5988, 190003, 9000, 102930, 5938, 1000000, 1000000, 5892, 38]
+damageChart = ["1542", "7935", "1139", "8882"]
+bossHealth = [150, 150, 150, 150]
 a = KiloManX()
 print(a.leastShots(damageChart, bossHealth))
