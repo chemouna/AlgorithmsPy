@@ -17,14 +17,15 @@ class KiloManX:
         # represent each weapon as a bit in an integer, we will have to store a maximum of 32,768 values
         # (2^15, as there is a maximum of 15 weapons). So we can make our visited array simply be an
         # array of 32,768 booleans.
-        visited = [False] * 32768
+        visited = []
         top = Node(0, 0)
         heapq.heappush(pq, top)
 
         m = len(damageChart)
         numWeapons = len(damageChart[0])
-        # for i in range(1 << 15):
-        #    visited.append(False)
+        nn = 1 << 15
+        for i in range(nn):
+            visited.append(False)
 
         while pq:
             top = heapq.heappop(pq)
@@ -42,16 +43,16 @@ class KiloManX:
 
             for itm in range(0, m):
                 # check first if we have visited this boss before
-                if (top.weapons >> itm & 1) == 1:
+                if ((top.weapons >> itm) & 1) == 1:
                     pass
 
                 best = bossHealth[itm]
 
-                for itn in range(0, m):
+                for itn in range(0, numWeapons):
                     if itm == itn:
                         pass
 
-                    if ((top.weapons >> itm) & 1 == 1) and damageChart[itn][itm] != '0':
+                    if ((top.weapons >> itn) & 1 == 1) and damageChart[itn][itm] != '0':
                         # we have weapons let's try it
                         harm = int(damageChart[itn][itm]) - int('0')
                         shots = math.floor(bossHealth[itm] / harm)
@@ -59,7 +60,7 @@ class KiloManX:
                             shots += 1
                         best = min(best, shots)
 
-                heapq.heappush(pq, Node(top.weapons | (1 << itm), top.shots + best))  # ??
+                heapq.heappush(pq, Node(top.weapons | (1 << itm), top.shots + best))
         return -1
 
 
@@ -67,6 +68,10 @@ class KiloManX:
 #               "158919111891911", "182731827381787", "135788359198718", "187587819218927", "185783759199192",
 #               "857819038188122", "897387187472737", "159938981818247", "128974182773177", "135885818282838"]
 #bossHealth = [157, 1984, 577, 3001, 2003, 2984, 5988, 190003, 9000, 102930, 5938, 1000000, 1000000, 5892, 38]
+
+# damageChart = ["070", "500", "140"]
+# bossHealth = [150, 150, 150]
+
 damageChart = ["1542", "7935", "1139", "8882"]
 bossHealth = [150, 150, 150, 150]
 a = KiloManX()
