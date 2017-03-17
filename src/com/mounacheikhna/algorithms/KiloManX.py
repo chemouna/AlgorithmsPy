@@ -29,7 +29,8 @@ class KiloManX:
 
         m = len(damageChart)
         numWeapons = len(damageChart[0])
-        nn = 1 << 15
+        nn = 1 << 15  # this is 32,768 (because 1 << x is a binary number with bit x set and the others clear
+        # which means here that 15th bit is set => 2^15 because max damageChart length as described in constraint is 15
         for i in range(nn):
             visited.append(False)
 
