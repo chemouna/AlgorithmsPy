@@ -3,8 +3,8 @@ import math
 
 
 class Node(object):
-    def __init__(self, weapon, shots):
-        self.weapon = weapon
+    def __init__(self, weapons, shots):
+        self.weapons = weapons
         self.shots = shots
 
     def __lt__(self, other):
@@ -14,48 +14,52 @@ class Node(object):
 class KiloManX:
     def leastShots(self, damageChart, bossHealth):
         pq = []
-        visited = []
+        # represent each weapon as a bit in an integer, we will have to store a maximum of 32,768 values
+        # (2^15, as there is a maximum of 15 weapons). So we can make our visited array simply be an
+        # array of 32,768 booleans.
+        visited = [False] * 32768
         top = Node(0, 0)
         heapq.heappush(pq, top)
 
         m = len(damageChart)
         numWeapons = len(damageChart[0])
-        for i in range(1 << 15):
-            visited.append(False)
+        # for i in range(1 << 15):
+        #    visited.append(False)
 
         while pq:
             top = heapq.heappop(pq)
 
-            # make sure we dont visit the same configuration twice
-            if visited[top.weapon]:
+            # make sure we don't visit the same configuration twice
+            if visited[top.weapons]:
                 pass
-
-            visited[top.weapon] = True
 
             # To check if we have all the weapons which means we defeated all bosses
             # we just check that we didn't exceed 2^numWeapons - 1 which represent all bits set to 1
-            if top.weapon == (1 << numWeapons) - 1:
+            if top.weapons == (1 << numWeapons) - 1:
                 return top.shots
+
+            visited[top.weapons] = True
 
             for itm in range(0, m):
                 # check first if we have visited this boss before
-                if top.weapon >> itm & 1: # why this ?
-                    continue
+                if (top.weapons >> itm & 1) == 1:
+                    pass
 
                 best = bossHealth[itm]
+
                 for itn in range(0, m):
                     if itm == itn:
                         pass
 
-                    if ((top.weapon >> itm) & 1 == 1) and damageChart[itn][itm] != '0':
-                        # we have a weapon let's try it
-                        harm = (damageChart[itn][itm] - '0')
+                    if ((top.weapons >> itm) & 1 == 1) and damageChart[itn][itm] != '0':
+                        # we have weapons let's try it
+                        harm = int(damageChart[itn][itm]) - int('0')
                         shots = math.floor(bossHealth[itm] / harm)
                         if bossHealth[itm] % harm != 0:
                             shots += 1
                         best = min(best, shots)
 
-                heapq.heappush(pq, Node(top.weapon | (1 << itm), top.shots + best)) # ??
+                heapq.heappush(pq, Node(top.weapons | (1 << itm), top.shots + best))  # ??
         return -1
 
 
