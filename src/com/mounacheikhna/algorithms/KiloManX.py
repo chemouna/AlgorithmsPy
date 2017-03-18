@@ -48,18 +48,21 @@ class KiloManX:
 
             visited[top.weapons] = True
 
+            # Relax step
             for itm in range(0, m):
                 # check first if we have visited this boss before
-                if ((top.weapons >> itm) & 1) == 1:
+                if ((itm << top.weapons) & 1) == 1:
                     pass
 
+                # we start with current boss as the one who has the best health and then we go through the other to
+                # find if one has better
                 best = bossHealth[itm]
 
                 for itn in range(0, numWeapons):
                     if itm == itn:
                         pass
 
-                    if ((top.weapons >> itn) & 1 == 1) and damageChart[itn][itm] != '0':
+                    if ((itn << top.weapons) & 1 == 1) and damageChart[itn][itm] != '0':
                         # we have weapons let's try it
                         harm = int(damageChart[itn][itm]) - int('0')
                         shots = math.floor(bossHealth[itm] / harm)
