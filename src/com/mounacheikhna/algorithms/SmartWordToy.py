@@ -43,10 +43,19 @@ class SmartWordToy:
             for c in nextChars:
                 clone = list(remainder)
                 clone.pop(0)
-                # TODO: see if we can solve this with a DP solution
                 self.expand_forbidden_word(str_so_far + c, clone, res)
 
 
 swt = SmartWordToy()
 print(swt.minPresses("aaaa", "zzzz",
                      ["a a a z", "a a z a", "a z a a", "z a a a", "a z z z", "z a z z", "z z a z", "z z z a"]))
+
+print(swt.minPresses("aaaa", "bbbb", []))
+
+print(swt.minPresses("aaaa", "mmnn", []))
+
+print(swt.minPresses("aaaa", "zzzz", ["bz a a a", "a bz a a", "a a bz a", "a a a bz"]))
+
+print(swt.minPresses("aaaa", "zzzz",
+                ["cdefghijklmnopqrstuvwxyz a a a", "a cdefghijklmnopqrstuvwxyz a a", "a a cdefghijklmnopqrstuvwxyz a",
+                 "a a a cdefghijklmnopqrstuvwxyz"]))
