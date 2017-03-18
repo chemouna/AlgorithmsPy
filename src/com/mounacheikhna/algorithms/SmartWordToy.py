@@ -1,5 +1,3 @@
-
-
 class SmartWordToy:
     def __init__(self):
         pass
@@ -7,22 +5,48 @@ class SmartWordToy:
     def minPresses(self, start, end, forbid):
         visited = {start}
         forbidExpanded = set()
-        self.expandForbid(forbid, forbidExpanded)
+        self.expand_forbid(forbid, forbidExpanded)
 
+        queue = [(start, 0)]
+        alphabet = list("abcdefghijklmnopqrstuvwxyz")
+        while queue:
+            node, presses = queue.pop()
+            if node == end:
+                return presses
 
-    def expandForbid(self, forbid, res):
-        for str in forbid:
+            for i in range(len(node)):
+                currentCharIndex = alphabet.index(node[i])
+                for j in [-1, 1]:
+                    newNode = list(node)
+                    newNode[i] = alphabet[(currentCharIndex + j) % 26]
+                    newNode = ''.join(newNode)
+                    if newNode not in visited and newNode not in forbidExpanded:
+                        visited.add(newNode)
+                        queue.insert(0, (newNode, presses + 1))
+
+        return -1
+
+    def expand_forbid(self, forbid, res):
+        for s in forbid:
             forbiddenWords = []
-            forbiddenWordsList = str.split(' ')
-            self.expandForbiddenWord(' ', forbiddenWordsList, forbiddenWords)
-            for s in forbiddenWords:
-                res.add(s)
+            forbiddenWordsList = s.split(' ')
+            self.expand_forbidden_word('', forbiddenWordsList, forbiddenWords)
+            for w in forbiddenWords:
+                res.add(w)
 
-    def expandForbiddenWord(self, strSoFar, remainder, res):
+    def expand_forbidden_word(self, str_so_far, remainder, res):
         if not remainder:
-            res.append(strSoFar)
+            res.append(str_so_far)
         else:
             nextChars = remainder[0]
             # we need to pick each character and combine it with other characters to get all forbidden word
             for c in nextChars:
                 clone = list(remainder)
+                clone.pop(0)
+                # TODO: see if we can solve this with a DP solution
+                self.expand_forbidden_word(str_so_far + c, clone, res)
+
+
+swt = SmartWordToy()
+print(swt.minPresses("aaaa", "zzzz",
+                     ["a a a z", "a a z a", "a z a a", "z a a a", "a z z z", "z a z z", "z z a z", "z z z a"]))
