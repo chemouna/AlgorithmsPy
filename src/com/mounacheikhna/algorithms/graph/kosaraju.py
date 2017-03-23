@@ -47,7 +47,7 @@ class Scc:
         for v in gg.neighbours(current):
             if not self.visited[v]:
                 self.visited[v] = True
-                sr += self.dfsT(current, gg)
+                sr += self.dfsT(v, gg)
 
         return sr
 
@@ -79,7 +79,7 @@ Z = DirectedGraph(3)
 Z.connect(0, 1)
 Z.connect(1, 2)
 Z.connect(2, 1)
-print(Scc(Z).kosaraju()) # should
+print(Scc(Z).kosaraju())  # should print [[0], [1, 2]]
 
 A = DirectedGraph(5)
 A.connect(0, 1)
