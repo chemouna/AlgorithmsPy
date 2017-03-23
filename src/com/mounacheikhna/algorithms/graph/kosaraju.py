@@ -4,7 +4,7 @@ from copy import *
 class Scc:
     def __init__(self, g):
         super().__init__()
-        self.visited = False * g.number_vertices
+        self.visited = [False] * g.number_vertices
         self.stack = []
         self.g = g
 
@@ -12,8 +12,6 @@ class Scc:
         """
         Determines SCC for a directed graph using Kosaraju's algorithm
         """
-
-        self.visited = False * self.g.number_vertices
 
         # First pass to calculate finish time
         for i in range(self.g.number_vertices):
@@ -25,6 +23,7 @@ class Scc:
         gg.transpose()
 
         # reset visited for the reversed graph
+        self.visited = [False] * gg.number_vertices
         # connected components
         cc = []
 
@@ -34,22 +33,26 @@ class Scc:
                 self.visited[e] = True
                 cc.append(self.dfsT(e, gg))
 
-    def dfs(self, current, g):
+        return cc
+
+    def dfs(self, current):
         for v in self.g.neighbours(current):
-            self.visited[v] = True
-            self.dfs(v)
+            if not self.visited[v]:
+                self.visited[v] = True
+                self.dfs(v)
         self.stack.append(current)
 
     def dfsT(self, current, gg):
         sr = [current]
         for v in gg.neighbours(current):
-            self.visited[v] = True
-            sr += self.dfsT(current, gg)
+            if not self.visited[v]:
+                self.visited[v] = True
+                sr += self.dfsT(current, gg)
 
         return sr
 
 
-class Directed_graph:
+class DirectedGraph:
     def __init__(self, n):
         self.number_vertices = n
         self.adj = [[False for _ in range(n)] for _ in range(n)]
@@ -72,13 +75,13 @@ class Directed_graph:
 
 # Tests
 
-Z = Directed_graph(3)
+Z = DirectedGraph(3)
 Z.connect(0, 1)
 Z.connect(1, 2)
 Z.connect(2, 1)
-print(Scc(Z).kosaraju())
+print(Scc(Z).kosaraju()) # should
 
-A = Directed_graph(5)
+A = DirectedGraph(5)
 A.connect(0, 1)
 A.connect(1, 2)
 A.connect(2, 0)
@@ -89,14 +92,14 @@ A.connect(4, 3)
 
 print(Scc(A).kosaraju())
 
-B = Directed_graph(8)
+B = DirectedGraph(8)
 B.connect(0, 1)
 B.connect(1, 2)
 B.connect(2, 1)
 
 B.connect(3, 4)
-B.connect(4, 5)
 B.connect(5, 3)
+B.connect(4, 5)
 
 B.connect(6, 7)
 
