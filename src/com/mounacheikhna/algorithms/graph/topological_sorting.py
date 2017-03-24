@@ -56,9 +56,9 @@ def dfs_visit(graph, v, color, found_cycle, L):
 
 # Adjacency list
 aGraph = {
-    'A': set([]),
-    'B': set(['A']),
-    'C': set(['B'])
+    'A': {},
+    'B': {'A'},
+    'C': {'B'}
 }
 result = topological_sort(aGraph)
 print("Topological sort >>> ", result)
