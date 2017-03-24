@@ -33,10 +33,12 @@ def dfs_topological_sort(graph):
     found_cycle = [False]
     for v in graph:
         if color[v] == "white":
-            dfs_visit(graph, v, color, found_cycle)
+            dfs_visit(graph, v, color, found_cycle, L)
         if found_cycle[0]:
-            # maybe display an errorg
+            print("Graph has cycles!")
             break
+    return L
+
 
 def dfs_visit(graph, v, color, found_cycle, L):
     if found_cycle[0]:
@@ -51,6 +53,7 @@ def dfs_visit(graph, v, color, found_cycle, L):
     color[v] = "black"
     L.append(v)
 
+
 # Adjacency list
 aGraph = {
     'A': set([]),
@@ -63,3 +66,5 @@ if len(result) == len(aGraph):
     print("Directed Acyclic Graph!")
 else:
     print("Graph has cycles!")
+
+print("DFS Topological sort >>> ", result)
