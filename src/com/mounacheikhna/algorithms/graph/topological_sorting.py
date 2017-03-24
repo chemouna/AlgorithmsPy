@@ -26,16 +26,40 @@ def topological_sort(graph):
 
     return topologicalSortedList
 
+
+def dfs_topological_sort(graph):
+    L = []
+    color = {u: "white" for u in graph}
+    found_cycle = [False]
+    for v in graph:
+        if color[v] == "white":
+            dfs_visit(graph, v, color, found_cycle)
+        if found_cycle[0]:
+            # maybe display an errorg
+            break
+
+def dfs_visit(graph, v, color, found_cycle, L):
+    if found_cycle[0]:
+        return
+    color[v] = "gray"
+    for w in graph[v]:
+        if color[w] == "gray":
+            found_cycle[0] = True
+            return
+        if color[w] == "white":
+            dfs_visit(graph, w, color, found_cycle, L)
+    color[v] = "black"
+    L.append(v)
+
 # Adjacency list
-graph = {
+aGraph = {
     'A': set([]),
     'B': set(['A']),
     'C': set(['B'])
 }
-result = topological_sort(graph)
+result = topological_sort(aGraph)
 print("Topological sort >>> ", result)
-# check if #nodes in result == #nodes in graph
-if len(result) == len(graph):
+if len(result) == len(aGraph):
     print("Directed Acyclic Graph!")
 else:
     print("Graph has cycles!")
