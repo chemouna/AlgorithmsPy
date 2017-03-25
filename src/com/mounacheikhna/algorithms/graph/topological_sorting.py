@@ -1,4 +1,4 @@
-def topological_sort(graph):
+def kahn_topological_sort(graph):
     topologicalSortedList = []
     zeroInDegreeVertexList = []
 
@@ -60,7 +60,7 @@ aGraph = {
     'B': {'A'},
     'C': {'B'}
 }
-result = topological_sort(aGraph)
+result = kahn_topological_sort(aGraph)
 print("Topological sort >>> ", result)
 if len(result) == len(aGraph):
     print("Directed Acyclic Graph!")
