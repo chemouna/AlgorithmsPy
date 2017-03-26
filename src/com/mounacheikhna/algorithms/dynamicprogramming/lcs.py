@@ -9,7 +9,7 @@ def lcs(xs, ys):
         *xb, xe = xs  # split xs into its beginning, xb, and its final element xe
         *yb, ye = ys
         if xe == ye:
-            return lcs(xb, ys) + [xe]
+            return lcs(xb, yb) + [xe]
         else:
             return max(lcs(xb, ys), lcs(xs, yb))
     else:
@@ -36,11 +36,9 @@ def count_lcs_calls(lcs):
 
     return wrapped, calls
 
+# lcs, calls = count_lcs_calls(lcs)
+# print(lcs("HUMAN", "CHIMPANZEE"))
 
-lcs, calls = count_lcs_calls(lcs)
-
-
-print(lcs("HUMAN", "CHIMPANZEE"))
 
 # print(lcs('MAN', 'PIG'))
 # print(*sorted((v, k) for k, v in calls.items()), sep='\n')
@@ -90,5 +88,35 @@ def memoizedLcs(xs, ys):
     return lcs_(len(xs), len(ys))
 
 
-print(memoizedLcs("HUMAN", "CHIMPANZEE"))
+# print(memoizedLcs("HUMAN", "CHIMPANZEE"))
+# ss = lcs('ACCGGTCGAGTGCGCGGAAGCCGGCCGAA', 'GTCGTTCGGAATGCCGTTGCTCTGTAAA')
+# print(''.join(ss))
 
+
+# but the memoized version will soon hit the recursion limit
+
+def lcsDp(a, b):
+    matrix = [[0 for j in range(len(b) + 1)] for i in range(len(a) + 1)]
+    for i, x in enumerate(a):
+        for j, y in enumerate(b):
+            if x == y:
+                matrix[i + 1][j + 1] = matrix[i][j] + 1
+            else:
+                matrix[i + 1][j + 1] = max(matrix[i][j + 1], matrix[i + 1][j])
+
+    # read the lcs itself
+    result = ""
+    x, y = len(a), len(b)
+    while x != 0 and y != 0:
+        if matrix[x][y] == matrix[x - 1][y]:
+            x -= 1
+        elif matrix[x][y] == matrix[x][y - 1]:
+            y -= 1
+        else:
+            result = a[x - 1] + result
+            x -= 1
+            y -= 1
+    return result
+
+print(lcsDp("HUMAN", "CHIMPANZEE"))
+print(lcsDp('ACCGGTCGAGTGCGCGGAAGCCGGCCGAA', 'GTCGTTCGGAATGCCGTTGCTCTGTAAA'))
