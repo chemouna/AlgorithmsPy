@@ -15,6 +15,7 @@ def sqrt(n):
             low = mid
         else:
             high = mid
+    return low
 
 
 print(sqrt(0))
