@@ -14,10 +14,7 @@ Answer:
 def _dfs(level, root, node, connections):
     N = 3
     if level == N:
-        if root == node:
-            return 1
-        else:
-            return 0
+        return 1 if root == node else 0
     else:
         res = 0
         for item in connections[node]:
@@ -25,12 +22,7 @@ def _dfs(level, root, node, connections):
         return res
 
 
-def get_num_triangles_dfs(list_node_pair):
-    """
-    @param list_node_pair, a list of edges which are
-    represented as tuples.
-    """
-    nodes = set()
+def compute_connections(list_node_pair, nodes):
     connections = {}
     for item in list_node_pair:
         a = item[0]
@@ -45,8 +37,20 @@ def get_num_triangles_dfs(list_node_pair):
             connections[b].append(a)
         else:
             connections[b] = [a]
+    return connections
+
+
+def get_num_triangles_dfs(list_node_pair):
+    """
+    @param list_node_pair, a list of edges which are
+    represented as tuples.
+
+    The algorithm used:
+
+    """
+    nodes = set()
+    connections = compute_connections(list_node_pair, nodes)
     mysum = 0
     for item in nodes:
         mysum += _dfs(0, item, item, connections)
-    res = mysum / 6
-    return res
+    return mysum / 6
