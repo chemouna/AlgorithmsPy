@@ -13,12 +13,13 @@ def solution(n):
             else:
                 Q += [(10 * k + m, div + 1, s | {m})
                       for m in range(10) if m not in s]
+    return Q
+
 
 def solution2(n):
     for p in permutations("0123456789"):
         if all(int("".join(p[:i])) % i == 0 for i in range(1, 11)):
             print(int("".join(p)))
-
 
 print(solution(10))
 # print(solution2(10))
