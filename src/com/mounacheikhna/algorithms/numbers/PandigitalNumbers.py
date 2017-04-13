@@ -1,3 +1,4 @@
+import math
 
 
 def solve():
@@ -14,7 +15,7 @@ def is_pandigital(a, b, c):
     presence = [False] * 10
     for x in (a, b, c):
         while x > 0:
-            q = x / 10
+            q = math.ceil(x / 10)
             r = x % 10
             if presence[r]:
                 return False
