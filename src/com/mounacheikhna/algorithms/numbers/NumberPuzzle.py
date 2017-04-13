@@ -23,3 +23,5 @@ def solution2(n):
 
 print(solution(10))
 # print(solution2(10))
+
+
