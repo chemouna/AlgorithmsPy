@@ -33,6 +33,7 @@ def value_mem(row, index):
     values[row][index] = result
     return result
 
+
 # Dynamic Programming (we can notice that for each row we need only information from the previous row)
 prev = []
 for row in range(20):
@@ -42,4 +43,3 @@ for row in range(20):
     curr.append(1)
     print(curr)
     prev = curr
-
