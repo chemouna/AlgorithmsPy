@@ -12,9 +12,20 @@ def recursiveDfs(graph, v, visited=None):
     if visited is None:
         visited = set()
     visited.add(v)
-    for next in graph[v] - visited:
-        recursiveDfs(graph, next, visited)
+    for n in graph[v] - visited:
+        recursiveDfs(graph, n, visited)
     return visited
+
+
+def dfs_paths(graph, start, goal):
+    stack = [(start, [start])]
+    while stack:
+        (vertex, path) = stack.pop()
+        for next in graph[vertex] - set(path):
+            if next == goal:
+                yield path + [next]
+            else:
+                stack.append((next, path + [next]))
 
 g = {'A': {'B', 'C'},
      'B': {'A', 'D', 'E'},
@@ -22,9 +33,11 @@ g = {'A': {'B', 'C'},
      'D': {'B'},
      'E': {'B', 'F'},
      'F': {'C', 'E'}}
-print(dfs(g, 'A'))
-print(recursiveDfs(g, 'A'))
 
-print(dfs(g, 'C'))
-print(recursiveDfs(g, 'C'))
+# print(dfs(g, 'A'))
+# print(recursiveDfs(g, 'A'))
 
+# print(dfs(g, 'C'))
+# print(recursiveDfs(g, 'C'))
+
+print(list(dfs_paths(g, 'A', 'F')))
