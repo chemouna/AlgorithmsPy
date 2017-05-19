@@ -1,6 +1,5 @@
 from random import randrange
 
-
 def sattoloCycle(items):
     i = len(items)
     while i > 1:
