@@ -7,6 +7,18 @@ def bfs(graph, start):
             queue.extend(graph[vertex] - visited)
     return visited
 
+
+def bfs_paths(graph, start, goal):
+    queue = [(start, [start])]
+    while queue:
+        (vertex, path) = queue.pop(0)
+        for n in graph[vertex] - set(path):
+            if n == goal:
+                yield path
+            else:
+                queue.append((n, path + [n]))
+
+
 g = {'A': {'B', 'C'},
      'B': {'A', 'D', 'E'},
      'C': {'A', 'F'},
@@ -15,4 +27,3 @@ g = {'A': {'B', 'C'},
      'F': {'C', 'E'}}
 
 print(bfs(g, 'A'))
-
