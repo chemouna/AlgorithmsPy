@@ -30,7 +30,20 @@ def next_permutation(elements):
     return elements
 
 
-print(next_permutation([1, 2, 3, 4]))
-print(next_permutation([4, 1, 2, 6, 5, 3]))
+def next_permutation_number(n):
+    return to_number(next_permutation(to_digits(n)))
 
-# TODO: fix for edge cases
+
+def to_digits(n):
+    c = []
+    for digit in str(n):
+        c.append(int(digit))
+    return c
+
+
+def to_number(lst):
+    return ''.join(str(digit) for digit in lst)
+
+
+print(next_permutation_number(1234))
+print(next_permutation_number(412653))
