@@ -1,5 +1,5 @@
-
 import random
+
 
 def generate_array(item_count, lower_bound, upper_bound):
     number_list = []
@@ -10,7 +10,7 @@ def generate_array(item_count, lower_bound, upper_bound):
 
 # using divide and conquer
 def max_subarray_divide_and_conquer(arr):
-    helper_max_subarray_div_conquer(arr, 0, (len(arr) - 1))
+    return helper_max_subarray_div_conquer(arr, 0, (len(arr) - 1))
 
 
 def helper_max_subarray_div_conquer(arr, l, r):
@@ -43,6 +43,8 @@ def max_subarray_kadane(arr):
 
 magnitude = input('enter vector size: ')
 number_list = generate_array(magnitude, -10, 10)
+print " input: "
+print number_list
 
 print "divide and conquer:"
 print max_subarray_divide_and_conquer(number_list)
