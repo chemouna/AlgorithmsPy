@@ -42,3 +42,15 @@ def matrixRegionSum(matrix, A, D, sums):
 
     return OD - OB - OC + OA
 
+
+a = [
+    [1, 1, 1, 1, 1],
+    [2, 2, 2, 2, 2],
+    [3, 3, 3, 3, 3],
+    [4, 4, 4, 4, 4],
+    [5, 5, 5, 5, 5]
+]
+
+print matrixRegionSum(a, [0, 0], [1, 1], precomputeSums(a))
+print matrixRegionSum(a, [1, 1], [3, 3], precomputeSums(a))
+
