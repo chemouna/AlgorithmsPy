@@ -14,6 +14,8 @@ print list(eratosthenes(50))
 
 _mrpt_num_trials = 5  # number of bases to test
 
+# coding=utf-8
+
 # Algorithm:
 #
 # Input: n > 2, an odd integer to be tested for primality;
@@ -29,7 +31,10 @@ _mrpt_num_trials = 5  # number of bases to test
 #       if x = n − 1 then do next LOOP
 #    return composite
 # return probably prime
-def is_probable_prime(n):
+import random
+
+
+def is_primer_miller_rabin(n, k=10):
     """
     Miller-Rabin primality test.
 
@@ -38,33 +43,47 @@ def is_probable_prime(n):
     """
     if n == 2:
         return True
-
-    if n % 2 == 0:
+    if not n & 1:
         return False
 
-    # write n-1 as 2**s * d
-    # repeatedly try to divide n-1 by 2
+    def check(a, s, d, n):
+        x = pow(a, d, n)
+        if x == 1:
+            return True
+        for i in xrange(s - 1):
+            if x == n - 1:
+                return True
+            x = pow(x, 2, n)
+        return x == n - 1
+
     s = 0
     d = n - 1
-    while True:
-        quotient, remainder = divmod(d, 2)
-        if remainder == 1:
-            break
+
+    while d % 2 == 0:
+        d >>= 1
         s += 1
-        d = quotient
 
-    # test the base a to see whether we 'find' compositeness of n
-    def try_composite(a):
-        if pow(a, d, n) == 1:
+    for i in xrange(k):
+        a = random.randrange(2, n - 1)
+        if not check(a, s, d, n):
             return False
-        for i in range(s):
-            if pow(a, 2 ** i * d, n) == n - 1:
-                return False
-        return True  # n is definitely composite
-
-    for i in range(_mrpt_num_trials):
-        a = random.randrange(2, n)
-        if try_composite(a):
-            return False
-
     return True
+
+
+print is_primer_miller_rabin(100 ** 10 - 1)
+
+
+def twinPrimes(num):
+    primesList = []
+    if num >= 5:
+        primesList.append((3, 5))
+    if num >= 7:
+        primesList.append((5, 7))
+    for x in range(0, num + 1, 30):  # why 30 ?
+        if is_primer_miller_rabin(x - 1) and is_primer_miller_rabin(x + 1):
+            primesList.append((x - 1, x + 1))
+        if is_primer_miller_rabin(x + 11) and is_primer_miller_rabin(x + 13) and num >= x + 11:
+            primesList.append((x + 11, x + 13))
+        if is_primer_miller_rabin(x + 17) and is_primer_miller_rabin(x + 19) and num >= x + 19:
+            primesList.append((x + 17, x + 19))
+    return primesList
